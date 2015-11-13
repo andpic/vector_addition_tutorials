@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#include <CL/opencl.h>
+#include <CL/cl.h>
  
 // OpenCL kernel. Each work item takes care of one element of c
 const char *kernelSource =                                       "\n" \
 "#pragma OPENCL EXTENSION cl_khr_fp64 : enable                    \n" \
-"__kernel void vecAdd(  __global double *a,                       \n" \
-"                       __global double *b,                       \n" \
-"                       __global double *c,                       \n" \
+"__kernel void vecAdd(  __global float *a,                       \n" \
+"                       __global float *b,                       \n" \
+"                       __global float *c,                       \n" \
 "                       const unsigned int n)                    \n" \
 "{                                                               \n" \
 "    //Get our global thread ID                                  \n" \
@@ -26,10 +26,10 @@ int main( int argc, char* argv[] )
     unsigned int n = 100000;
  
     // Host input vectors
-    double *h_a;
-    double *h_b;
+    float *h_a;
+    float *h_b;
     // Host output vector
-    double *h_c;
+    float *h_c;
  
     // Device input buffers
     cl_mem d_a;
@@ -37,7 +37,7 @@ int main( int argc, char* argv[] )
     // Device output buffer
     cl_mem d_c;
  
-    cl_platform_id cpPlatform;        // OpenCL platform
+    cl_platform_id cpPlatform[2];     // OpenCL platforms
     cl_device_id device_id;           // device ID
     cl_context context;               // context
     cl_command_queue queue;           // command queue
@@ -45,12 +45,12 @@ int main( int argc, char* argv[] )
     cl_kernel kernel;                 // kernel
  
     // Size, in bytes, of each vector
-    size_t bytes = n*sizeof(double);
+    size_t bytes = n*sizeof(float);
  
     // Allocate memory for each vector on host
-    h_a = (double*)malloc(bytes);
-    h_b = (double*)malloc(bytes);
-    h_c = (double*)malloc(bytes);
+    h_a = (float*)malloc(bytes);
+    h_b = (float*)malloc(bytes);
+    h_c = (float*)malloc(bytes);
  
     // Initialize vectors on host
     int i;
@@ -70,10 +70,10 @@ int main( int argc, char* argv[] )
     globalSize = ceil(n/(float)localSize)*localSize;
  
     // Bind to platform
-    err = clGetPlatformIDs(1, &cpPlatform, NULL);
+    err = clGetPlatformIDs(2, cpPlatform, NULL);
  
     // Get ID for the device
-    err = clGetDeviceIDs(cpPlatform, CL_DEVICE_TYPE_GPU, 1, &device_id, NULL);
+    err = clGetDeviceIDs(cpPlatform[1], CL_DEVICE_TYPE_GPU, 1, &device_id, NULL);
  
     // Create a context  
     context = clCreateContext(0, 1, &device_id, NULL, NULL, &err);
@@ -120,10 +120,10 @@ int main( int argc, char* argv[] )
                                 bytes, h_c, 0, NULL, NULL );
  
     //Sum up vector c and print result divided by n, this should equal 1 within error
-    double sum = 0;
+    float sum = 0;
     for(i=0; i<n; i++)
         sum += h_c[i];
-    printf("final result: %f\n", sum/(double)n);
+    printf("final result: %f\n", sum/(float)n);
  
     // release OpenCL resources
     clReleaseMemObject(d_a);

@@ -1,6 +1,6 @@
 #define __CL_ENABLE_EXCEPTIONS
  
-#include "cl.hpp"
+#include <cl.hpp>
 #include <cstdio>
 #include <cstdlib>
 #include <iostream>

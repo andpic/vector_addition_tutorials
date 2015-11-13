@@ -1,19 +1,18 @@
-all: checkEnv clean vecAdd_cl vecAdd_cc_cl
+all: clean vecAdd_cl
 
-.PHONY: checkEnv clean
+.PHONY: clean
+
+LDLIBS=  -L. \
+	 -lm \
+    	 -lOpenCL \
+    	 -lrt \
+    	 -lpthread \
+	 -ldl \
+	 -lstdc++
 
 vecAdd_cl: vecAdd.c
 	mkdir -p bin
-	cc -lOpenCL -o bin/vecAdd_cl vecAdd.c
-
-vecAdd_cc_cl: vecAdd.cc
-	mkdir -p bin
-	CC -lOpenCL -o bin/vecAdd_ccl vecAdd.cc
-
-checkEnv:
-ifndef CRAY_CUDATOOLKIT_VERSION
-	$(error cudatoolkit module not loaded)
-endif
+	gcc -g -o bin/vecAdd_cl vecAdd.c $(LDLIBS) 
 
 clean:
 	rm -rf bin
