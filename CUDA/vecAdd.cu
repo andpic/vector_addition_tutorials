@@ -72,7 +72,10 @@ int main( int argc, char* argv[] )
     double sum = 0;
     for(i=0; i<n; i++)
         sum += h_c[i];
-    printf("final result: %f\n", sum/(double)n);
+    if(sum/(double)n==1)
+       printf("SUCCESS\n");
+    else
+       printf("FAIL\n");
  
     // Release device memory
     cudaFree(d_a);
