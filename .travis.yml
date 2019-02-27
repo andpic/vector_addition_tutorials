@@ -1,0 +1,31 @@
+language: cpp
+sudo: required
+compiler:
+    - gcc
+os:
+    - linux
+    
+env:
+    global:
+        - CUDA_VERSION="10.0"
+        - CRAY_CUDATOOLKIT_VERSION=${CUDA_VERSION}
+        - CUDA_PKG_VERSION="130-1"
+        - CUDA_PKG=cuda-repo-ubuntu1404_${CUDA_VERSION}.${CUDA_PKG_VERSION}_amd64.deb
+        - CUDA_LIB_LOCAL=${HOME}/cuda_lib_${CUDA_VERSION}
+        - CUDA_HOME=${CUDA_LIB_LOCAL}
+        - PATH=${CUDA_HOME}/bin:${GOPATH}/bin:${CUDA_HOME}/nvvm/bin:${PATH}
+        - LD_LIBRARY_PATH=${CUDA_HOME}/lib64:${TRAVIS_HOME}/gopath/src/github.com/uber/aresdb/lib
+        - NVCCFLAGS="-ldir ${CUDA_HOME}/nvvm/libdevice -noprof -I ${CUDA_HOME}/include/ -L ${CUDA_HOME}/lib64"
+        - GTEST_ROOT=./build/googletest
+         
+before_install:
+    - .travis/install_cuda.sh
+    
+install:  
+    - cd CUDA && make
+  
+script:
+    - cd CUDA && ./bin/vecAdd_cu
+
+after_script:
+    - cd CUDA && make clean
