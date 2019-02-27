@@ -23,7 +23,7 @@ env:
         - GTEST_ROOT=./build/googletest
          
 before_install:
-    - .travis/install_cuda.sh
+    - bash .travis/install_cuda.sh
     
 install:  
     - cd CUDA && make
