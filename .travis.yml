@@ -5,6 +5,10 @@ compiler:
 os:
     - linux
     
+branches:
+    only:
+        - master
+    
 env:
     global:
         - CUDA_VERSION="10.0"
