@@ -22,14 +22,11 @@ env:
         - NVCCFLAGS="-ldir ${CUDA_HOME}/nvvm/libdevice -noprof -I ${CUDA_HOME}/include/ -L ${CUDA_HOME}/lib64"
         - GTEST_ROOT=./build/googletest
          
-before_install:
-    - bash .travis/install_cuda.sh
-    
-install:  
-    - cd CUDA && make
+install:
+    - bash .travis/install_cuda.sh    
   
 script:
-    - cd CUDA && ./bin/vecAdd_cu
+    - cd CUDA && make && ./bin/vecAdd_cu
 
 after_script:
     - cd CUDA && make clean
