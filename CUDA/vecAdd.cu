@@ -72,7 +72,10 @@ int main( int argc, char* argv[] )
     // Sum up vector c and print result divided by n, this should equal 1 within error
     double sum = 0;
     for(i=0; i<n; i++)
-        sum += h_c[i];
+    {
+      printf("%4d: %f\n", i, h_c[i]);
+      sum += h_c[i];
+    }
     printf("final result: %f\n", sum/((double) n));
  
     // Release device memory
