@@ -44,10 +44,11 @@ int main( int argc, char* argv[] )
     cudaMalloc(&d_c, bytes);
  
     int i;
+    double pi = 3.1417;
     // Initialize vectors on host
     for( i = 0; i < n; i++ ) {
-        h_a[i] = sin(i/100)*sin(i/100);
-        h_b[i] = cos(i/100)*cos(i/100);
+        h_a[i] = sin(pi*i/n)*sin(pi*i/n);
+        h_b[i] = cos(pi*i/n)*cos(pi*i/n);
     }
  
     // Copy host vectors to device
@@ -72,7 +73,7 @@ int main( int argc, char* argv[] )
     double sum = 0;
     for(i=0; i<n; i++)
         sum += h_c[i];
-    printf("final result: %f\n", sum/(double)n);
+    printf("final result: %f\n", sum/((double) n));
  
     // Release device memory
     cudaFree(d_a);
