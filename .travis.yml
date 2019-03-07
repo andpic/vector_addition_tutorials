@@ -26,7 +26,7 @@ install:
     - bash .travis/install_cuda.sh    
   
 script:
-    - cd CUDA && make && ./bin/vecAdd_cu
+    - cd CUDA && make && ./bin/vecAdd_cu && ./bin/deviceQuery
 
 after_script:
     - cd CUDA && make clean

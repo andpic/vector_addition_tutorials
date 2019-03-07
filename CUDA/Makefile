@@ -1,15 +1,14 @@
-all: checkEnv clean vecAdd_cu
+all: clean vecAdd_cu deviceQuery 
 
-.PHONY: checkEnv clean
+.PHONY: clean
 
 vecAdd_cu: vecAdd.cu
 	mkdir -p bin
 	nvcc -arch=sm_35 -o bin/vecAdd_cu vecAdd.cu
 
-checkEnv:
-ifndef CRAY_CUDATOOLKIT_VERSION
-	$(error cudatoolkit module not loaded)
-endif
+deviceQuery: deviceQuery.cpp
+	mkdir -p bin
+	nvcc -arch=sm_35 -o bin/deviceQuery -I. deviceQuery.cpp
 
 clean:
 	rm -rf bin

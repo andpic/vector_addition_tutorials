@@ -16,7 +16,7 @@ __global__ void vecAdd(double *a, double *b, double *c, int n)
 int main( int argc, char* argv[] )
 {
     // Size of vectors
-    int n = 100000;
+    int n = 10000;
  
     // Host input vectors
     double *h_a;
@@ -46,8 +46,8 @@ int main( int argc, char* argv[] )
     int i;
     // Initialize vectors on host
     for( i = 0; i < n; i++ ) {
-        h_a[i] = sin(i)*sin(i);
-        h_b[i] = cos(i)*cos(i);
+        h_a[i] = sin(i/100)*sin(i/100);
+        h_b[i] = cos(i/100)*cos(i/100);
     }
  
     // Copy host vectors to device
